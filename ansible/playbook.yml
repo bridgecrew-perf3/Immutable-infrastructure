@@ -1,0 +1,30 @@
+---
+- name: set up nginx
+
+  hosts: default
+  become: true
+
+  tasks:
+    - name: apt-get update
+      apt:
+        update_cache: yes
+      become: yes
+
+    - name: get key from nginx
+      shell: "sudo wget http://nginx.org/keys/nginx_signing.key"
+      become: yes  
+
+    - name: get key from nginx
+      shell: "sudo apt-key add nginx_signing.key"
+      become: yes  
+
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: enable nginx service
+      service:
+        name: nginx
+        enabled: true
